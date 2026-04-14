@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
 export const fetchMessages = createAsyncThunk('chat/fetchMessages', async ({ room, page = 1 }) => {
-  const res = await api.get('/chats', { params: { room, page, limit: 50 } });
+  const res = await api.get('/chats', { params: { room, page, limit: 50000 } });
   return { messages: res.data.data, room, page };
 });
 
