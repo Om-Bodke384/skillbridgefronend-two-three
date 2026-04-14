@@ -23,7 +23,7 @@ export default function TownhallDetailPage() {
     try {
       const [thRes, msgRes] = await Promise.all([
         api.get(`/townhalls/${id}`),
-        api.get('/chats', { params: { room: `townhall:${id}`, limit: 100 } }),
+        api.get('/chats', { params: { room: `townhall:${id}`, limit: 10000 } }),
       ]);
       setTownhall(thRes.data.data);
       setMessages(msgRes.data.data || []);
