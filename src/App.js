@@ -37,7 +37,7 @@ import LoadingSpinner         from './components/ui/LoadingSpinner';
 // ─── Route Guards ─────────────────────────────────────────────────────────────
 function ProtectedRoute({ children, roles }) {
   const { isAuthenticated, isInitialized, user } = useSelector((s) => s.auth);
-  if (!isInitialized) return <LoadingSpinner fullScreen />;
+  // if (!isInitialized) return <LoadingSpinner fullScreen />;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (roles && !roles.includes(user?.role)) return <Navigate to="/dashboard" replace />;
   return children;
@@ -45,7 +45,7 @@ function ProtectedRoute({ children, roles }) {
 
 function PublicRoute({ children }) {
   const { isAuthenticated, isInitialized, justRegistered } = useSelector((s) => s.auth);
-  if (!isInitialized) return <LoadingSpinner fullScreen />;
+  // if (!isInitialized) return <LoadingSpinner fullScreen />;
   if (justRegistered) return children;
   if (isAuthenticated) return <Navigate to="/dashboard" replace />;
   return children;
