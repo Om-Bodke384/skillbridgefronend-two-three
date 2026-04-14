@@ -18,7 +18,7 @@ export default function TownhallPage() {
 
   const load = () => {
     setLoading(true);
-    api.get('/townhalls', { params: { communityId, status: undefined, limit: 20 } })
+    api.get('/townhalls', { params: { communityId, status: undefined, limit: 20000 } })
       .then((r) => setTownhalls(r.data.data.townhalls || []))
       .finally(() => setLoading(false));
   };
