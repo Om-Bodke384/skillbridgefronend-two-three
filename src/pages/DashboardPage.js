@@ -16,9 +16,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     Promise.all([
-      api.get('/announcements', { params: { isGlobal: true, limit: 4 } }),
-      api.get('/hackathons', { params: { limit: 3 } }),
-      api.get('/events', { params: { limit: 3 } }),
+      api.get('/announcements', { params: { isGlobal: true, limit: 4000 } }),
+      api.get('/hackathons', { params: { limit: 3000 } }),
+      api.get('/events', { params: { limit: 3000 } }),
     ]).then(([ann, hack, ev]) => {
       setAnnouncements(ann.data.data.announcements || []);
       setHackathons(hack.data.data.hackathons || []);
