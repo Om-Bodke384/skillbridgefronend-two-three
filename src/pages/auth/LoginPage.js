@@ -72,17 +72,24 @@ export default function LoginPage() {
           {errors.password && <p className="text-xs text-red-400 mt-1">{errors.password.message}</p>}
         </div>
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="btn-primary w-full justify-center py-3 text-base"
-        >
-          {isLoading ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          ) : (
-            <><span>Sign in</span><HiArrowRight /></>
-          )}
-        </button>
+  <button
+  type="submit"
+  disabled={isLoading}
+  className="btn-primary w-full justify-center py-3 text-base"
+>
+  {isLoading ? (
+    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+  ) : (
+    <><span>Sign in</span><HiArrowRight /></>
+  )}
+</button>
+
+{/* ADD THIS BELOW THE BUTTON */}
+{isLoading && (
+  <p className="text-center text-xs text-gray-500 mt-2">
+    First load may take 20–30s while server wakes up...
+  </p>
+)}
       </form>
 
       <p className="mt-6 text-center text-sm text-gray-400">
