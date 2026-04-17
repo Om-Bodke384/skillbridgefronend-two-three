@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyCommunities } from '../../store/slices/communitySlice';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
-
+import ChatbotWidget from '../ui/ChatbotWidget';
 export default function MainLayout() {
   const dispatch = useDispatch();
   const { sidebarCollapsed } = useSelector((s) => s.ui);
@@ -13,7 +13,7 @@ export default function MainLayout() {
     dispatch(fetchMyCommunities());
   }, [dispatch]);
 
-  return (
+ return (
     <div className="flex h-screen bg-gray-950 overflow-hidden">
       <Sidebar />
       <div className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${sidebarCollapsed ? 'ml-16' : 'ml-64'}`}>
@@ -24,6 +24,7 @@ export default function MainLayout() {
           </div>
         </main>
       </div>
+      <ChatbotWidget />
     </div>
   );
 }
