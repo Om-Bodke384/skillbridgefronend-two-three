@@ -20,6 +20,7 @@ import {
   HiChevronRight,
   HiOfficeBuilding,
 } from 'react-icons/hi';
+import { HiVideoCamera } from 'react-icons/hi';  // already imported ✅
 
 const navItems = [
   { to: '/dashboard',       icon: HiHome,            label: 'Dashboard'       },
@@ -32,6 +33,7 @@ const navItems = [
   { to: '/learning',        icon: HiAcademicCap,      label: 'Learning Plans'  },
   { to: '/peer-review',     icon: HiClipboardCheck,   label: 'Peer Review'     },
   { to: '/peer-mentorship', icon: HiHand,             label: 'Peer Mentorship' },
+  { to: '/live', icon: HiVideoCamera, label: 'Live' },
 ];
 
 export default function Sidebar() {

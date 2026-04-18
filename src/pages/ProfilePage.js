@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateProfile } from '../store/slices/authSlice';
@@ -6,9 +8,8 @@ import api from '../services/api';
 import { Badge, Avatar, Modal, LoadingSpinner } from '../components/ui/index';
 import {
   HiPencil, HiGlobe, HiCode, HiMail,
-  HiExternalLink, HiUserCircle,
+  HiExternalLink, HiUserCircle, HiCamera,
 } from 'react-icons/hi';
-import { useForm } from 'react-hook-form';
 
 const DOMAINS = [
   'Web Development', 'Mobile Development', 'Data Science',
@@ -23,6 +24,32 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
+
+  const [avatarUploading, setAvatarUploading] = useState(false);
+
+const handleAvatarChange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    toast.error('Image must be under 5MB');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('avatar', file);
+  try {
+    setAvatarUploading(true);
+    const { data } = await api.patch('/users/avatar', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    setProfile((prev) => ({ ...prev, avatar: data.data.avatar }));
+    dispatch(updateProfile({ avatar: data.data.avatar }));
+    toast.success('Profile photo updated!');
+  } catch {
+    toast.error('Failed to upload photo');
+  } finally {
+    setAvatarUploading(false);
+  }
+};
   const isOwn = currentUser?._id === id;
 
   useEffect(() => {
@@ -44,13 +71,29 @@ export default function ProfilePage() {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-start gap-5">
             <div className="relative">
-              <Avatar src={profile.avatar} name={profile.name} size="xl" />
-              <div
-                className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-700 ${
-                  profile.isActive ? 'bg-green-400' : 'bg-gray-500'
-                }`}
-              />
-            </div>
+  <Avatar src={profile.avatar} name={profile.name} size="xl" />
+  <div
+    className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-700 ${
+      profile.isActive ? 'bg-green-400' : 'bg-gray-500'
+    }`}
+  />
+  {/* Camera upload button — only shown to profile owner */}
+  {isOwn && (
+    <label className="absolute -top-1 -right-1 w-7 h-7 bg-indigo-600 hover:bg-indigo-500 rounded-full flex items-center justify-center cursor-pointer transition-colors shadow-lg">
+      {avatarUploading
+        ? <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+        : <HiCamera className="text-white text-sm" />
+      }
+      <input
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleAvatarChange}
+        disabled={avatarUploading}
+      />
+    </label>
+  )}
+</div>
             <div>
               <h1 className="text-2xl font-bold text-white">{profile.name}</h1>
               <div className="flex items-center gap-2 mt-1 flex-wrap">

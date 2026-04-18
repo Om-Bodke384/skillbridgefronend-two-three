@@ -33,7 +33,8 @@ import ProfilePage            from './pages/ProfilePage';
 import AdminDashboard         from './pages/admin/AdminDashboard';
 import NotFoundPage           from './pages/NotFoundPage';
 import LoadingSpinner         from './components/ui/LoadingSpinner';
-
+import LivePage     from './pages/live/LivePage';
+import LiveRoomPage from './pages/live/LiveRoomPage';
 // ─── Route Guards ─────────────────────────────────────────────────────────────
 function ProtectedRoute({ children, roles }) {
   const { isAuthenticated, isInitialized, user } = useSelector((s) => s.auth);
@@ -128,6 +129,8 @@ export default function App() {
           <Route path="/peer-review/:id"     element={<PeerReviewDetailPage />} />
           <Route path="/peer-mentorship"     element={<PeerMentorshipPage />} />
           <Route path="/profile/:id"         element={<ProfilePage />} />
+          <Route path="/live"     element={<LivePage />} />
+<Route path="/live/:id" element={<LiveRoomPage />} />
           <Route path="/admin"               element={
             <ProtectedRoute roles={['admin']}>
               <AdminDashboard />
