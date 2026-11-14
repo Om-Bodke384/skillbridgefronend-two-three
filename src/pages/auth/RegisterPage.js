@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { register as registerUser, clearError } from '../../store/slices/authSlice';
 import { HiMail, HiLockClosed, HiUser, HiArrowRight, HiCheckCircle } from 'react-icons/hi';
+import GoogleAuthButton from '../../components/auth/GoogleAuthButton';
+import AuthDivider from '../../components/auth/AuthDivider';
 
 const DOMAINS = [
   'Web Development', 'Mobile Development', 'Data Science',
@@ -14,7 +16,9 @@ const DOMAINS = [
 export default function RegisterPage() {
   const dispatch = useDispatch();
   const { isLoading, error, justRegistered, user } = useSelector((s) => s.auth);
-  const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: { role: 'student' } });
+  const { register, handleSubmit, watch, formState: { errors } } = useForm({ defaultValues: { role: 'student' } });
+  const selectedRole   = watch('role');
+  const selectedDomain = watch('techDomain');
 
   useEffect(() => { return () => dispatch(clearError()); }, [dispatch]);
 
@@ -147,6 +151,9 @@ export default function RegisterPage() {
           )}
         </button>
       </form>
+
+      <AuthDivider label="or sign up with" />
+      <GoogleAuthButton text="signup_with" role={selectedRole} techDomain={selectedDomain} />
 
       <p className="mt-5 text-center text-sm text-gray-400">
         Already have an account?{' '}

@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, clearError } from '../../store/slices/authSlice';
 import { HiMail, HiLockClosed, HiArrowRight } from 'react-icons/hi';
+import GoogleAuthButton from '../../components/auth/GoogleAuthButton';
+import AuthDivider from '../../components/auth/AuthDivider';
 
 export default function LoginPage() {
   const dispatch  = useDispatch();
@@ -91,6 +93,9 @@ export default function LoginPage() {
   </p>
 )}
       </form>
+
+      <AuthDivider label="or continue with" />
+      <GoogleAuthButton text="signin_with" />
 
       <p className="mt-6 text-center text-sm text-gray-400">
         Don't have an account?{' '}
