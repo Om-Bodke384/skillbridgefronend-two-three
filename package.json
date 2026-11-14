@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.0.1",
     "agora-rtc-sdk-ng": "^4.24.3",
     "axios": "^1.6.2",

@@ -36,6 +36,21 @@ export const login = createAsyncThunk(
   }
 );
 
+export const googleLogin = createAsyncThunk(
+  'auth/googleLogin',
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await api.post('/auth/google', data);
+      const { user, accessToken, isNewUser } = res.data.data;
+      localStorage.setItem('accessToken', accessToken);
+      initSocket(accessToken);
+      return { user, accessToken, isNewUser };
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Google sign-in failed');
+    }
+  }
+);
+
 export const logout = createAsyncThunk('auth/logout', async () => {
   try { await api.post('/auth/logout'); } catch { /* ignore */ }
   localStorage.removeItem('accessToken');
@@ -124,6 +139,31 @@ const authSlice = createSlice({
         toast.success(`Welcome back, ${action.payload.user.name}! 👋`);
       })
       .addCase(login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error     = action.payload;
+      });
+
+    // ── google login / signup ─────────────────────────────────────────────────
+    // Google already verified the email, so the user is authenticated straight away
+    builder
+      .addCase(googleLogin.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(googleLogin.fulfilled, (state, action) => {
+        state.isLoading       = false;
+        state.user            = action.payload.user;
+        state.accessToken     = action.payload.accessToken;
+        state.isAuthenticated = true;
+        state.isInitialized   = true;
+        state.justRegistered  = false;
+        toast.success(
+          action.payload.isNewUser
+            ? `Welcome to SkillBridge, ${action.payload.user.name}! 🚀`
+            : `Welcome back, ${action.payload.user.name}! 👋`
+        );
+      })
+      .addCase(googleLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.error     = action.payload;
       });
